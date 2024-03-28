@@ -49,7 +49,7 @@ function HomeScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.containerHome}>
       <Camera style={styles.camera} ref={cameraRef} />
       <Button title="Take Picture" onPress={takePic} />
     </View>
@@ -73,7 +73,7 @@ function PreviewScreen({ route, navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.containerPreview}>
       <Image style={styles.preview} source={{ uri: photo.uri }} />
       <TextInput
         style={styles.input}
@@ -105,7 +105,14 @@ function PreviewScreen({ route, navigation }) {
 
 
 const styles = StyleSheet.create({
-  container: {
+  containerPreview: {
+    flex: 1,
+    backgroundColor: '#f9f9f9', // Light gray background for a modern look
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20, // Padding added on the sides for better spacing
+  },
+  containerHome: {
     flex: 1,
     backgroundColor: '#f9f9f9', // Light gray background for a modern look
     alignItems: 'center',
