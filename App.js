@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9', // Light gray background for a modern look
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20, // Padding added on the sides for better spacing
   },
   camera: {
     flex: 1,
