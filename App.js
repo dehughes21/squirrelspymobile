@@ -107,40 +107,52 @@ function PreviewScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f9f9f9', // Light gray background for a modern look
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20, // Padding added on the sides for better spacing
   },
   camera: {
     flex: 1,
     width: '100%',
   },
   preview: {
-    width: '100%',
-    height: '70%',
+    width: '80%',
+    aspectRatio: 9 / 16, // Aspect ratio for better image display
+    borderRadius: 10, // Rounded corners for a modern appearance
+    marginBottom: 20, // Space between preview and input
   },
   input: {
-    width: '80%',
+    width: '100%',
     height: 40,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#dcdcdc', // Lighter border color for subtlety
+    borderRadius: 5, // Rounded corners for inputs
     marginTop: 10,
     paddingHorizontal: 10,
+    backgroundColor: '#ffffff', // White background for inputs
   },
   picker: {
-    width: '80%',
+    width: '100%',
     height: 50,
     marginTop: 10,
+    paddingHorizontal: 10,
+    backgroundColor: '#ffffff', // White background for pickers
+    borderRadius: 5, // Rounded corners for pickers
+    borderWidth: 1,
+    borderColor: '#dcdcdc', // Lighter border color for subtlety
   },
   labelContainer: {
-    width: '80%',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: 20
+    marginTop: 20,
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#333333', // Darker text color for better readability
+    marginRight: 10, // Space between label and picker
   },
 });
