@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Button, Image, TextInput, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, TextInput, SafeAreaView, ScrollView, Alert } from 'react-native';
 import { Camera } from 'expo-camera';
 import { shareAsync } from 'expo-sharing';
 import * as MediaLibrary from 'expo-media-library';
@@ -63,41 +63,82 @@ function PreviewScreen({ route, navigation }) {
   const [comment, setComment] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
 
-  const sharePic = () => {
-    shareAsync(photo.uri);
+  const confirmSighting = () => {
+    shareAsync(photo.uri); // Replace with POST request to Django backend to send relevant data (image, metadata, comment, squirrel, behavior)
   };
 
   const savePhoto = async () => {
     await MediaLibrary.saveToLibraryAsync(photo.uri);
-    navigation.goBack();
+  };
+
+  const discardPhoto = () => {
+    Alert.alert(
+      'Discard Image',
+      'Are you sure you want to discard this image?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Discard',
+          onPress: () => navigation.goBack(),
+          style: 'destructive',
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (
     <SafeAreaView style={styles.containerPreview}>
-      <Image style={styles.preview} source={{ uri: photo.uri }} />
-      <TextInput
-        style={styles.input}
-        placeholder="Sighting comment"
-        value={comment}
-        onChangeText={setComment}
-      />
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>Behavior</Text>
-      </View>
-      <Picker
-        selectedValue={selectedOption}
-        style={styles.picker}
-        onValueChange={(itemValue, itemIndex) =>
-          setSelectedOption(itemValue)
-        }>
-        <Picker.Item label="None" value="" />
-        <Picker.Item label="Eating" value="Eating" />
-        <Picker.Item label="Sleeping" value="Sleeping" />
-        <Picker.Item label="Chasing a squirrel" value="Chasing a squirrel" />
-      </Picker>
-      <Button title="Share" onPress={sharePic} />
-      <Button title="Save" onPress={savePhoto} />
-      <Button title="Discard" onPress={() => navigation.goBack()} />
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      
+        <Image style={styles.preview} source={{ uri: photo.uri }} />
+        
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>Squirrel</Text>
+        </View>
+        <Picker
+          selectedValue={selectedOption}
+          style={styles.picker}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedOption(itemValue)
+          }>
+          <Picker.Item label="Untagged" value="0" />
+          <Picker.Item label="Left: Red/Blue" value="1" />
+          <Picker.Item label="Right: Green/Orange" value="2" />
+          <Picker.Item label="Left: Yellow" value="3" />
+        </Picker>
+
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>Behavior</Text>
+        </View>
+        <Picker
+          selectedValue={selectedOption}
+          style={styles.picker}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedOption(itemValue)
+          }>
+          <Picker.Item label="None" value="" />
+          <Picker.Item label="Eating" value="Eating" />
+          <Picker.Item label="Sleeping" value="Sleeping" />
+          <Picker.Item label="Chasing a squirrel" value="Chasing a squirrel" />
+        </Picker>
+        
+        <TextInput
+          style={styles.input}
+          placeholder="Sighting comment"
+          value={comment}
+          onChangeText={setComment}
+        />
+
+        <View style={styles.buttonsContainer}>
+          <Button title="Discard" onPress={discardPhoto} />
+          <Button title="Save Image" onPress={savePhoto} />
+          <Button title="Confirm Sighting" onPress={confirmSighting} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -126,7 +167,12 @@ const styles = StyleSheet.create({
     width: '80%',
     aspectRatio: 9 / 16, 
     borderRadius: 10, 
-    marginBottom: 20, 
+    marginBottom: 30, 
+  },
+  scrollViewContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   input: {
     width: '100%',
@@ -153,6 +199,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    marginTop: 20,
+  },
+  buttonsContainer: {
+    flexDirection: 'row', 
     marginTop: 20,
   },
   label: {
